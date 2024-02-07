@@ -1,25 +1,28 @@
-const express = require('express')
-const app = express()
-const port = 5000
+const { ApolloServer } = require("@apollo/server");
+const { startStandaloneServer } = require("@apollo/server/standalone");
+const mongoose = require("mongoose");
+const { resolvers } = require("./resolvers.js");
+const { typeDefs } = require("./models/typeDefs.js");
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const MONGO_URI = "mongodb+srv://<username>:<password>@cluster0.vtzyo.gcp.mongodb.net/?retryWrites=true&w=majority";
 
-app.post('/', (req, res) => {
-    res.send('Got a POST request')
-})
-  
+// Database connection
+mongoose
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log(`Db Connected`);
+  })
+  .catch(err => {
+    console.log(err.message);
+  });
 
-app.put('/user', (req, res) => {
-    res.send('Got a PUT request at /user')
-})
-  
-app.delete('/user', (req, res) => {
-    res.send('Got a DELETE request at /user')
-})
-  
+const server = new ApolloServer({ typeDefs, resolvers });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+startStandaloneServer(server, {
+  listen: { port: 4000 },
+}).then(({ url }) => {
+  console.log(`Server ready at ${url}`);
+});
