@@ -8,15 +8,32 @@ const resolvers = {
     },
     Mutation: {
         create: async (parent, args) => {
-          const { title, isComplete } = args;
-          const newTask = new Task({
-            title,
-            isComplete
-          });
-          await newTask.save();
-          return newTask;
+            const { title, isComplete } = args;
+            const newTask = new Task({
+                title,
+                isComplete
+            });
+            await newTask.save();
+            return newTask;
         },
-      },
+    
+        update: async (parent, args) => {
+            const { id } = args;
+            const updatedTask = await Task.findByIdAndUpdate(id, args);
+            if (!updatedTask) {
+                throw new Error(`Task with ID ${id} not found`);
+            }
+            return updatedTask;
+        },
+        delete: async (parent, args) => {
+            const { id } = args;
+            const deletedTask = await Task.findByIdAndDelete(id);
+            if (!deletedTask) {
+                throw new Error(`Task with ID ${id} not found`);
+            }
+            return deletedTask;
+        },
+    }
   };
   
   module.exports = { resolvers };

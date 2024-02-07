@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const { resolvers } = require("./resolvers.js");
 const { typeDefs } = require("./models/typeDefs.js");
 
-const MONGO_URI = "mongodb+srv://<username>:<password>@cluster0.vtzyo.gcp.mongodb.net/?retryWrites=true&w=majority";
+const MONGO_URI = "mongodb+srv://testUser:testUser@cluster0.vtzyo.gcp.mongodb.net/?retryWrites=true&w=majority";
 
 // Database connection
 mongoose

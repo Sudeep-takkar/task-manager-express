@@ -18,6 +18,8 @@ const typeDefs = gql`
   # Mutation
   type Mutation {
     create(title: String, isComplete: Boolean): Task
+    update(id: ID, title: String, isComplete: Boolean): Task
+    delete(id: ID): Task
   }
 `;
 
